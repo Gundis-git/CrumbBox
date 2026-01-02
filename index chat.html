@@ -1,0 +1,1071 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <title>CrumbBox – Mobile WebApp (HTML Prototype)</title>
+  <style>
+    :root{
+      --sun:#F7D86A;
+      --sand:#E8D9C4;
+      --cream:#F6EAD2;
+      --honey:#EECF7A;
+      --cocoa:#4A2E1B;
+      --caramel:#8B5E3C;
+
+      --stroke: rgba(139,94,60,0.18);
+      --textSoft: rgba(74,46,27,0.78);
+      --shadow: 0 10px 30px rgba(74,46,27,0.08);
+    }
+    *{ box-sizing:border-box; }
+    html,body{ height:100%; }
+    body{
+      margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Apple Color Emoji","Segoe UI Emoji";
+      background: var(--cream);
+      color: var(--cocoa);
+    }
+
+    /* Mobile frame (optional, looks like phone) */
+    .app{
+      max-width:420px;
+      margin:0 auto;
+      min-height:100vh;
+      background: var(--cream);
+      position:relative;
+    }
+
+    .top-accent{ height:8px; background: var(--sun); }
+
+    .header{
+      padding: 18px 16px 12px 16px;
+      background: var(--cream);
+      position: sticky;
+      top: 0;
+      z-index: 5;
+    }
+    .headerRow{
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap:12px;
+    }
+    .backBtn{
+      border:1px solid var(--stroke);
+      background: var(--sand);
+      color: var(--cocoa);
+      border-radius:16px;
+      padding:10px 12px;
+      font-weight:700;
+      cursor:pointer;
+    }
+    .brandPill{
+      background: rgba(247,216,106,0.6);
+      color: var(--cocoa);
+      border-radius:16px;
+      padding:10px 12px;
+      font-weight:800;
+      font-size:12px;
+      border:1px solid rgba(139,94,60,0.15);
+      white-space:nowrap;
+    }
+    .title{
+      font-size:20px;
+      font-weight:800;
+      line-height:1.15;
+    }
+    .subtitle{
+      margin-top:4px;
+      font-size:13px;
+      color: var(--textSoft);
+      line-height:1.35;
+    }
+
+    .content{
+      padding: 12px 16px 96px 16px; /* bottom padding for nav */
+    }
+
+    .card{
+      background:#fff;
+      border:1px solid var(--stroke);
+      border-radius:22px;
+      padding:16px;
+      box-shadow: var(--shadow);
+    }
+    .card + .card{ margin-top:12px; }
+
+    .row{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:12px;
+    }
+    .col{ display:flex; flex-direction:column; gap:6px; }
+
+    .muted{ color: var(--textSoft); }
+    .small{ font-size:12px; }
+    .btn{
+      width:100%;
+      border:0;
+      border-radius:18px;
+      padding:14px 14px;
+      font-weight:800;
+      font-size:15px;
+      cursor:pointer;
+      box-shadow: 0 8px 18px rgba(74,46,27,0.10);
+      transition: transform 0.03s ease;
+    }
+    .btn:active{ transform: scale(0.99); }
+    .btnPrimary{ background: var(--cocoa); color: var(--cream); }
+    .btnGhost{ background: var(--sand); color: var(--cocoa); border:1px solid var(--stroke); box-shadow:none; }
+
+    .grid2{ display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+
+    .pill{
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+      padding:6px 10px;
+      border-radius:999px;
+      font-size:12px;
+      border:1px solid var(--stroke);
+      background: var(--cream);
+      color: var(--caramel);
+      white-space:nowrap;
+    }
+
+    input{
+      width:100%;
+      border:1px solid rgba(139,94,60,0.25);
+      border-radius:18px;
+      padding:14px 14px;
+      font-size:15px;
+      outline:none;
+      background:#fff;
+      color: var(--cocoa);
+    }
+
+    .listBtn{
+      width:100%;
+      text-align:left;
+      border:1px solid var(--stroke);
+      background:#fff;
+      border-radius:22px;
+      padding:14px;
+      cursor:pointer;
+      box-shadow: var(--shadow);
+    }
+    .listBtn + .listBtn{ margin-top:10px; }
+
+    .tagRow{ display:flex; flex-wrap:wrap; gap:8px; margin-top:8px; }
+
+    .tabs{ display:flex; gap:10px; }
+    .tab{
+      flex:1;
+      border:1px solid var(--stroke);
+      background: rgba(232,217,196,0.55);
+      color: var(--cocoa);
+      border-radius:18px;
+      padding:10px 12px;
+      font-weight:800;
+      cursor:pointer;
+    }
+    .tab.active{
+      background: rgba(247,216,106,0.6);
+    }
+
+    .prod{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:12px;
+      border:1px solid var(--stroke);
+      background:#fff;
+      border-radius:22px;
+      padding:14px;
+      box-shadow: var(--shadow);
+    }
+    .prod + .prod{ margin-top:10px; }
+
+    .plusBtn{
+      border:0;
+      background: var(--cocoa);
+      color: var(--cream);
+      border-radius:16px;
+      padding:12px 14px;
+      font-weight:900;
+      cursor:pointer;
+    }
+
+    .qty{
+      display:flex;
+      align-items:center;
+      gap:10px;
+    }
+    .qtyBtn{
+      border:1px solid var(--stroke);
+      background: var(--sand);
+      color: var(--cocoa);
+      border-radius:14px;
+      padding:10px 12px;
+      font-weight:900;
+      cursor:pointer;
+      min-width:44px;
+    }
+    .qtyNum{ width:28px; text-align:center; font-weight:800; }
+
+    .totalRow{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      padding:12px 14px;
+      border-radius:16px;
+      background: rgba(232,217,196,0.55);
+      margin-top:12px;
+      font-weight:900;
+    }
+
+    /* Bottom nav */
+    .nav{
+      position:fixed;
+      left:0; right:0; bottom:0;
+      margin:0 auto;
+      max-width:420px;
+      background: rgba(246,234,210,0.96);
+      border-top:1px solid var(--stroke);
+      padding:8px 10px;
+      z-index: 10;
+    }
+    .navGrid{
+      display:grid;
+      grid-template-columns:repeat(4,1fr);
+      gap:6px;
+    }
+    .navBtn{
+      position:relative;
+      border:0;
+      background:transparent;
+      border-radius:18px;
+      padding:10px 8px;
+      cursor:pointer;
+      color: var(--cocoa);
+    }
+    .navBtn.active{ background: rgba(247,216,106,0.6); }
+    .navIcon{ font-size:18px; }
+    .navLabel{ font-size:11px; font-weight:800; margin-top:2px; }
+    .badge{
+      position:absolute;
+      top:6px; right:8px;
+      background: var(--cocoa);
+      color: var(--cream);
+      border-radius:999px;
+      padding:2px 7px;
+      font-size:10px;
+      font-weight:900;
+    }
+
+    .hidden{ display:none !important; }
+
+    .toast{
+      position:fixed;
+      left:0; right:0;
+      bottom:92px;
+      margin:0 auto;
+      max-width:420px;
+      padding:0 16px;
+      z-index: 20;
+      pointer-events:none;
+    }
+    .toastBox{
+      pointer-events:auto;
+      background: #fff;
+      border:1px solid var(--stroke);
+      border-radius:18px;
+      padding:12px 14px;
+      box-shadow: var(--shadow);
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:10px;
+    }
+    .toastBtn{
+      border:0;
+      background: rgba(247,216,106,0.6);
+      color: var(--cocoa);
+      border-radius:14px;
+      padding:10px 12px;
+      font-weight:900;
+      cursor:pointer;
+      white-space:nowrap;
+    }
+
+    .bigNumber{
+      font-size:44px;
+      font-weight:900;
+      letter-spacing: 0.5px;
+    }
+    .code{
+      font-size:30px;
+      font-weight:900;
+      letter-spacing: 6px;
+    }
+    .qr{
+      width:72px;height:72px;
+      border-radius:18px;
+      background: rgba(74,46,27,0.08);
+      display:grid;
+      place-items:center;
+      font-weight:900;
+    }
+  </style>
+</head>
+<body>
+<div class="app">
+  <div class="top-accent"></div>
+
+  <!-- TOAST -->
+  <div class="toast hidden" id="toast">
+    <div class="toastBox">
+      <div class="small" id="toastText">Hinweis</div>
+      <button class="toastBtn" id="toastAction">OK</button>
+    </div>
+  </div>
+
+  <!-- WELCOME -->
+  <section id="screen-welcome">
+    <div class="content" style="padding-top:18px;">
+      <div class="card">
+        <div class="row">
+          <div class="brandPill">CrumbBox</div>
+          <div class="small muted" style="font-weight:800;">Skip the Line · Enjoy your Time</div>
+        </div>
+
+        <div style="margin-top:14px;">
+          <div class="title" style="font-size:26px;">Schnell rein. Schnell raus.</div>
+          <div class="subtitle">Vorbestellen, bezahlen, abholen – ohne Anstehen.</div>
+        </div>
+
+        <div style="margin-top:18px;">
+          <div class="small" style="font-weight:900; color:var(--textSoft);">Noch nicht registriert? (Demo-Login)</div>
+          <div style="margin-top:10px; display:flex; gap:10px;">
+            <input id="loginName" placeholder="Dein Name (z.B. Lena)" value="Lena" />
+            <button class="btn btnPrimary" style="width:auto; padding:14px 16px;" id="btnLogin">Login</button>
+          </div>
+        </div>
+
+        <div style="margin-top:12px;" class="grid2">
+          <div style="background:var(--cream); border:1px solid var(--stroke); border-radius:18px; padding:12px;">
+            <div class="small" style="font-weight:900; color:var(--textSoft);">1-Click Reorder</div>
+            <div style="margin-top:4px; font-weight:900;">„Wie letztes Mal?“</div>
+          </div>
+          <div style="background:var(--cream); border:1px solid var(--stroke); border-radius:18px; padding:12px;">
+            <div class="small" style="font-weight:900; color:var(--textSoft);">Morning Reward</div>
+            <div style="margin-top:4px; font-weight:900;">Jede 3. Bestellung: Kaffee</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" style="background: rgba(232,217,196,0.55); border:1px solid rgba(139,94,60,0.10);">
+        <div style="font-weight:900;">Warum das funktioniert</div>
+        <ul class="subtitle" style="margin:8px 0 0 18px;">
+          <li>Du bestellst, bevor du die Schlange siehst.</li>
+          <li>Du bekommst Push, sobald alles bereit ist.</li>
+          <li>Abholen dauert Sekunden.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- HOME -->
+  <section id="screen-home" class="hidden">
+    <div class="header">
+      <div class="headerRow">
+        <div>
+          <div class="title" id="homeTitle">Hallo Lena, willkommen zurück</div>
+          <div class="subtitle">Dein Morning-Rush in unter 60 Sekunden</div>
+        </div>
+        <div class="brandPill">CrumbBox</div>
+      </div>
+    </div>
+
+    <div class="content">
+      <div class="card">
+        <div class="row">
+          <div class="col">
+            <div style="font-weight:900;">Zuletzt bestellt</div>
+            <div class="small muted">1 Tap Reorder – perfekt für die Routine</div>
+          </div>
+          <span class="pill" id="rewardPill">Orders: 2</span>
+        </div>
+
+        <div id="lastOrderBlock" style="margin-top:12px;">
+          <div class="muted small">Noch keine Bestellungen – starte mit deiner Lieblingsbäckerei.</div>
+          <div style="margin-top:12px;">
+            <button class="btn btnGhost" id="btnToBakeriesFromHome">Bäckerei auswählen</button>
+          </div>
+        </div>
+
+        <div id="reorderBlock" class="hidden" style="margin-top:12px;">
+          <div class="subtitle" id="lastOrderText">1× Laugenbrezel · 1× Buttercroissant</div>
+          <div style="margin-top:12px;">
+            <button class="btn btnPrimary" id="btnReorder">Möchtest du wieder das Gleiche?</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div style="font-weight:900;">Schnellstart</div>
+        <div class="small muted" style="margin-top:6px;">Produkte auswählen, bezahlen, abholen</div>
+
+        <div style="margin-top:12px;" class="grid2">
+          <button class="listBtn" id="btnToBakeriesQuick" style="background: rgba(247,216,106,0.45);">
+            <div style="font-weight:900;">Bäckereien</div>
+            <div class="small muted" style="margin-top:4px;">Filiale wählen</div>
+          </button>
+          <button class="listBtn" id="btnToPickupQuick" style="background: rgba(232,217,196,0.7);">
+            <div style="font-weight:900;">Abholung</div>
+            <div class="small muted" style="margin-top:4px;">Countdown & Code</div>
+          </button>
+        </div>
+      </div>
+
+      <div class="card" style="background: rgba(232,217,196,0.55); border:1px solid rgba(139,94,60,0.10);">
+        <div style="font-weight:900;">CrumbBox-Versprechen</div>
+        <div class="subtitle">Weniger warten. Weniger Stress. Mehr Zeit.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- BAKERIES -->
+  <section id="screen-bakeries" class="hidden">
+    <div class="header">
+      <div class="headerRow">
+        <button class="backBtn" id="backFromBakeries">←</button>
+        <div style="flex:1;">
+          <div class="title">Teilnehmende Bäckereien</div>
+          <div class="subtitle">Wähle deine Filiale</div>
+        </div>
+        <div style="width:44px;"></div>
+      </div>
+    </div>
+
+    <div class="content">
+      <input id="bakerySearch" placeholder="Suchen (z.B. Ulm)" />
+      <div style="margin-top:12px;" id="bakeryList"></div>
+    </div>
+  </section>
+
+  <!-- BAKERY DETAIL -->
+  <section id="screen-bakery" class="hidden">
+    <div class="header">
+      <div class="headerRow">
+        <button class="backBtn" id="backFromBakery">←</button>
+        <div style="flex:1;">
+          <div class="title" id="bakeryTitle">Bäckerei</div>
+          <div class="subtitle" id="bakerySubtitle">Ort</div>
+        </div>
+        <button class="backBtn" id="btnGoCart" style="position:relative;">
+          🛒 <span class="badge hidden" id="cartBadgeTop">0</span>
+        </button>
+      </div>
+    </div>
+
+    <div class="content">
+      <div class="tabs">
+        <button class="tab active" id="tabQuick">Schnellwahl</button>
+        <button class="tab" id="tabAll">Alles</button>
+      </div>
+
+      <div style="margin-top:12px;" id="productList"></div>
+
+      <div style="margin-top:12px;">
+        <button class="btn btnGhost" id="btnGoCartBottom">Warenkorb ansehen</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- CART -->
+  <section id="screen-cart" class="hidden">
+    <div class="header">
+      <div class="headerRow">
+        <button class="backBtn" id="backFromCart">←</button>
+        <div style="flex:1;">
+          <div class="title">Warenkorb</div>
+          <div class="subtitle" id="cartSubtitle">Noch leer</div>
+        </div>
+        <div style="width:44px;"></div>
+      </div>
+    </div>
+
+    <div class="content">
+      <div class="card hidden" id="rewardBanner" style="background: rgba(247,216,106,0.55);">
+        <div style="font-weight:900;">Morning Reward aktiv</div>
+        <div class="subtitle">Nächste Bestellung: Kaffee gratis (wird automatisch ergänzt, falls verfügbar).</div>
+      </div>
+
+      <div class="card" id="cartCard">
+        <div class="muted">Dein Warenkorb ist leer.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PICKUP -->
+  <section id="screen-pickup" class="hidden">
+    <div class="header">
+      <div class="headerRow">
+        <button class="backBtn" id="backFromPickup">←</button>
+        <div style="flex:1;">
+          <div class="title">Abholung</div>
+          <div class="subtitle" id="pickupSubtitle">Keine aktive Bestellung</div>
+        </div>
+        <div class="brandPill" id="orderIdPill" style="display:none;">CB-XXXXX</div>
+      </div>
+    </div>
+
+    <div class="content">
+      <div id="pickupEmpty" class="card">
+        <div class="subtitle">Noch keine Bestellung unterwegs.</div>
+        <div style="margin-top:12px;">
+          <button class="btn btnPrimary" id="btnOrderNowFromPickup">Jetzt bestellen</button>
+        </div>
+      </div>
+
+      <div id="pickupActive" class="hidden">
+        <div class="card" id="countdownCard" style="background: rgba(232,217,196,0.55);">
+          <div style="font-weight:900;" id="countdownLabel">Abholung in</div>
+          <div class="bigNumber" id="countdownValue">5:00</div>
+          <div class="subtitle" id="countdownHint">Wir schicken dir eine Push-Benachrichtigung, sobald alles bereit ist.</div>
+        </div>
+
+        <div class="card">
+          <div class="row" style="align-items:flex-start;">
+            <div>
+              <div style="font-weight:900;">Abholcode</div>
+              <div class="code" id="pickupCode">123456</div>
+              <div class="small muted">Zeige den Code am Abholautomaten / Express-Pickup.</div>
+            </div>
+            <div style="text-align:center;">
+              <div class="small" style="font-weight:900;">QR</div>
+              <div class="qr" aria-label="QR Placeholder">▦</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div style="font-weight:900;">Bestellung</div>
+          <div style="margin-top:10px;" id="pickupItems"></div>
+        </div>
+
+        <div class="card" style="background: rgba(232,217,196,0.55); border:1px solid rgba(139,94,60,0.10);">
+          <div style="font-weight:900;">UX-Note</div>
+          <div class="subtitle">Time-to-Bread: Countdown + Push reduzieren Unsicherheit und Wartezeit.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- NAV -->
+  <nav class="nav hidden" id="bottomNav">
+    <div class="navGrid">
+      <button class="navBtn" data-nav="home">
+        <div class="navIcon">⌂</div>
+        <div class="navLabel">Home</div>
+      </button>
+      <button class="navBtn" data-nav="bakeries">
+        <div class="navIcon">🥐</div>
+        <div class="navLabel">Bäckereien</div>
+      </button>
+      <button class="navBtn" data-nav="cart">
+        <div class="navIcon">🛒</div>
+        <div class="navLabel">Warenkorb</div>
+        <span class="badge hidden" id="navCartBadge">0</span>
+      </button>
+      <button class="navBtn" data-nav="pickup">
+        <div class="navIcon">⏱</div>
+        <div class="navLabel">Abholung</div>
+        <span class="badge hidden" id="navPickupBadge">•</span>
+      </button>
+    </div>
+  </nav>
+</div>
+
+<script>
+  // ---------- Mock Data ----------
+  const bakeries = [
+    {
+      id: "b1",
+      name: "Bäckerei Sonnenkruste",
+      location: "Ulm · Innenstadt",
+      etaMins: 7,
+      popular: true,
+      products: [
+        { id: "p1", name: "Buttercroissant", price: 1.60, desc: "Flaky, frisch gebacken", tags:["Morning"] },
+        { id: "p2", name: "Laugenbrezel", price: 1.20, desc: "Classic", tags:["Fast"] },
+        { id: "p3", name: "Kaffee (Small)", price: 2.20, desc: "To-go", tags:["Add-on"] },
+        { id: "p4", name: "Vollkornbrötchen", price: 0.85, desc: "Herzhaft", tags:["Healthy"] }
+      ]
+    },
+    {
+      id: "b2",
+      name: "Kruste & Co.",
+      location: "Neu-Ulm · Bahnhof",
+      etaMins: 5,
+      popular: false,
+      products: [
+        { id: "p5", name: "Käse-Stange", price: 1.90, desc: "Warm möglich", tags:["Morning"] },
+        { id: "p6", name: "Schokobrötchen", price: 1.40, desc: "Süß", tags:["Treat"] },
+        { id: "p7", name: "Cappuccino", price: 2.90, desc: "Classic", tags:["Add-on"] }
+      ]
+    },
+    {
+      id: "b3",
+      name: "Landbäckerei Huber",
+      location: "Biberach · Süd",
+      etaMins: 11,
+      popular: false,
+      products: [
+        { id: "p8", name: "Seele", price: 1.25, desc: "Schwäbischer Klassiker", tags:["Fast"] },
+        { id: "p9", name: "Dinkelbrötchen", price: 0.95, desc: "Leicht", tags:["Healthy"] }
+      ]
+    }
+  ];
+
+  // ---------- State ----------
+  let user = null;
+  let selectedBakeryId = null;
+  let cart = []; // {product, qty, bakeryId}
+  let lastOrder = null; // copy of cart items at checkout
+  let activeOrder = null; // {id, bakery, items, pickupAt, code}
+  let orderCount = 2; // demo: so next order is 3rd => reward
+  let bakeryTab = "quick";
+
+  // ---------- Helpers ----------
+  const eur = (n) => new Intl.NumberFormat("de-DE",{style:"currency",currency:"EUR"}).format(n);
+  const byId = (id) => document.getElementById(id);
+  const qs = (sel) => document.querySelector(sel);
+  const qsa = (sel) => Array.from(document.querySelectorAll(sel));
+
+  function showToast(text, actionText="OK", onAction=null){
+    const toast = byId("toast");
+    byId("toastText").textContent = text;
+    const btn = byId("toastAction");
+    btn.textContent = actionText;
+    btn.onclick = () => {
+      toast.classList.add("hidden");
+      if (onAction) onAction();
+    };
+    toast.classList.remove("hidden");
+    setTimeout(()=> toast.classList.add("hidden"), 2600);
+  }
+
+  function setScreen(name){
+    const screens = ["welcome","home","bakeries","bakery","cart","pickup"];
+    screens.forEach(s => byId(`screen-${s}`).classList.add("hidden"));
+    byId(`screen-${name}`).classList.remove("hidden");
+
+    // Bottom nav visible when logged in and not welcome
+    const nav = byId("bottomNav");
+    if(user && name !== "welcome") nav.classList.remove("hidden");
+    else nav.classList.add("hidden");
+
+    // Active state nav buttons
+    qsa(".navBtn").forEach(btn=>{
+      btn.classList.toggle("active", btn.dataset.nav === name);
+    });
+
+    renderAll();
+  }
+
+  function getSelectedBakery(){
+    return bakeries.find(b => b.id === selectedBakeryId) || null;
+  }
+
+  function cartCount(){
+    return cart.reduce((a,it)=>a+it.qty,0);
+  }
+
+  function cartTotal(){
+    return cart.reduce((a,it)=>a + it.product.price*it.qty, 0);
+  }
+
+  function coffeeRewardAvailable(){
+    // reward for every 3rd order (simple demo)
+    return ((orderCount + 1) % 3) === 0;
+  }
+
+  function ensureSingleBakery(bakeryId){
+    const other = cart.find(it => it.bakeryId !== bakeryId);
+    if(other){
+      cart = [];
+      showToast("Warenkorb wurde auf eine Bäckerei beschränkt (MVP).");
+    }
+  }
+
+  function addToCart(product, bakeryId){
+    ensureSingleBakery(bakeryId);
+    const idx = cart.findIndex(it => it.product.id === product.id && it.bakeryId === bakeryId);
+    if(idx >= 0) cart[idx].qty += 1;
+    else cart.push({product, qty:1, bakeryId});
+    renderAll();
+    showToast(`${product.name} hinzugefügt`, "Warenkorb", ()=> setScreen("cart"));
+  }
+
+  function updateQty(productId, delta){
+    cart = cart.map(it => it.product.id === productId ? {...it, qty: Math.max(0, it.qty + delta)} : it)
+            .filter(it => it.qty > 0);
+    renderAll();
+  }
+
+  function clearCart(){
+    cart = [];
+    renderAll();
+  }
+
+  function placeOrder(){
+    if(!cart.length) return;
+
+    const bakeryId = cart[0].bakeryId;
+    const bakery = bakeries.find(b => b.id === bakeryId);
+    if(!bakery) return;
+
+    let finalItems = cart.slice();
+
+    // Add free coffee if eligible and available in bakery products
+    if(coffeeRewardAvailable()){
+      const coffee = bakery.products.find(p => p.name.toLowerCase().includes("kaffee"));
+      if(coffee){
+        const already = finalItems.some(it => it.product.id === coffee.id);
+        if(!already){
+          finalItems.push({product: coffee, qty: 1, bakeryId});
+        }
+      }
+    }
+
+    const pickupAt = Date.now() + (bakery.etaMins || 8)*60*1000;
+    const id = "CB-" + Math.random().toString(16).slice(2,7).toUpperCase();
+    const code = Math.random().toString().slice(2,8);
+
+    activeOrder = { id, bakery, items: finalItems, pickupAt, code };
+    lastOrder = finalItems.map(it => ({...it}));
+    orderCount += 1;
+    cart = [];
+
+    setScreen("pickup");
+    renderAll();
+  }
+
+  function quickReorder(){
+    if(!lastOrder || !lastOrder.length) return;
+    cart = lastOrder.map(it => ({...it}));
+    setScreen("cart");
+  }
+
+  // ---------- Render ----------
+  function renderHome(){
+    byId("homeTitle").textContent = `Hallo ${user.name}, willkommen zurück`;
+
+    // reward pill
+    byId("rewardPill").textContent = coffeeRewardAvailable() ? "Nächste: Gratis Kaffee" : `Orders: ${orderCount}`;
+
+    const hasLast = lastOrder && lastOrder.length;
+    byId("lastOrderBlock").classList.toggle("hidden", !!hasLast);
+    byId("reorderBlock").classList.toggle("hidden", !hasLast);
+
+    if(hasLast){
+      const txt = lastOrder.slice(0,3).map(it => `${it.qty}× ${it.product.name}`).join(" · ") + (lastOrder.length>3 ? " …" : "");
+      byId("lastOrderText").textContent = txt;
+    }
+
+    // pickup quick disabled look (simple)
+    byId("btnToPickupQuick").style.opacity = activeOrder ? "1" : "0.6";
+  }
+
+  function renderBakeries(){
+    const q = byId("bakerySearch").value.trim().toLowerCase();
+    const list = q
+            ? bakeries.filter(b => (b.name + " " + b.location).toLowerCase().includes(q))
+            : bakeries;
+
+    const container = byId("bakeryList");
+    container.innerHTML = "";
+
+    list.forEach(b=>{
+      const btn = document.createElement("button");
+      btn.className = "listBtn";
+      btn.innerHTML = `
+          <div class="row">
+            <div class="col">
+              <div style="font-weight:900">${b.name}</div>
+              <div class="small muted">${b.location}</div>
+              <div class="tagRow">
+                ${b.popular ? `<span class="pill">Beliebt</span>` : ``}
+                ${typeof b.etaMins === "number" ? `<span class="pill">Abholung ~ ${b.etaMins} Min</span>` : ``}
+              </div>
+            </div>
+            <div class="brandPill" style="padding:10px 12px;">→</div>
+          </div>
+        `;
+      btn.onclick = ()=>{
+        selectedBakeryId = b.id;
+        bakeryTab = "quick";
+        setScreen("bakery");
+      };
+      container.appendChild(btn);
+    });
+  }
+
+  function renderBakery(){
+    const b = getSelectedBakery();
+    if(!b) return;
+
+    byId("bakeryTitle").textContent = b.name;
+    byId("bakerySubtitle").textContent = b.location;
+
+    // tabs
+    byId("tabQuick").classList.toggle("active", bakeryTab === "quick");
+    byId("tabAll").classList.toggle("active", bakeryTab === "all");
+
+    const products = (bakeryTab === "all")
+            ? b.products
+            : b.products.slice(0, Math.min(4, b.products.length));
+
+    const container = byId("productList");
+    container.innerHTML = "";
+
+    products.forEach(p=>{
+      const div = document.createElement("div");
+      div.className = "prod";
+      div.innerHTML = `
+          <div class="col">
+            <div style="font-weight:900">${p.name}</div>
+            ${p.desc ? `<div class="small muted">${p.desc}</div>` : ``}
+            <div class="tagRow">
+              <span class="pill">${eur(p.price)}</span>
+              ${(p.tags||[]).slice(0,2).map(t=>`<span class="pill">${t}</span>`).join("")}
+            </div>
+          </div>
+          <button class="plusBtn" aria-label="Add">+</button>
+        `;
+      div.querySelector(".plusBtn").onclick = ()=> addToCart(p, b.id);
+      container.appendChild(div);
+    });
+
+    // cart badge top
+    const c = cartCount();
+    const badge = byId("cartBadgeTop");
+    if(c>0){ badge.textContent = c; badge.classList.remove("hidden"); }
+    else badge.classList.add("hidden");
+  }
+
+  function renderCart(){
+    const card = byId("cartCard");
+    const subtitle = byId("cartSubtitle");
+    const rewardBanner = byId("rewardBanner");
+
+    if(!cart.length){
+      subtitle.textContent = "Noch leer";
+      rewardBanner.classList.add("hidden");
+      card.innerHTML = `<div class="muted">Dein Warenkorb ist leer.</div>`;
+      return;
+    }
+
+    const b = bakeries.find(x=>x.id===cart[0].bakeryId);
+    subtitle.textContent = b ? `Abholung bei: ${b.name}` : "Abholung";
+
+    rewardBanner.classList.toggle("hidden", !coffeeRewardAvailable());
+
+    const itemsHtml = cart
+            .slice()
+            .sort((a,b)=>a.product.name.localeCompare(b.product.name))
+            .map(it=>`
+          <div class="row" style="margin-top:12px;">
+            <div class="col">
+              <div style="font-weight:900">${it.product.name}</div>
+              <div class="small muted">${eur(it.product.price)}</div>
+            </div>
+            <div class="qty">
+              <button class="qtyBtn" data-dec="${it.product.id}">−</button>
+              <div class="qtyNum">${it.qty}</div>
+              <button class="qtyBtn" data-inc="${it.product.id}">+</button>
+            </div>
+          </div>
+        `).join("");
+
+    card.innerHTML = `
+        <div>${itemsHtml}</div>
+        <div class="totalRow">
+          <span>Summe</span>
+          <span>${eur(cartTotal())}</span>
+        </div>
+
+        <div class="grid2" style="margin-top:10px;">
+          <button class="btn btnGhost" id="btnClearCart">Leeren</button>
+          <button class="btn btnPrimary" id="btnCheckout">Bezahlen & bestellen</button>
+        </div>
+
+        <div class="small muted" style="margin-top:10px;">Zahlung in der App · Abholung per Code/QR (MVP)</div>
+      `;
+
+    // qty controls
+    qsa("[data-dec]").forEach(btn=>{
+      btn.onclick = ()=> updateQty(btn.dataset.dec, -1);
+    });
+    qsa("[data-inc]").forEach(btn=>{
+      btn.onclick = ()=> updateQty(btn.dataset.inc, +1);
+    });
+
+    byId("btnClearCart").onclick = clearCart;
+    byId("btnCheckout").onclick = placeOrder;
+  }
+
+  function renderPickup(){
+    const empty = byId("pickupEmpty");
+    const active = byId("pickupActive");
+    const subtitle = byId("pickupSubtitle");
+    const orderPill = byId("orderIdPill");
+
+    if(!activeOrder){
+      empty.classList.remove("hidden");
+      active.classList.add("hidden");
+      subtitle.textContent = "Keine aktive Bestellung";
+      orderPill.style.display = "none";
+      byId("navPickupBadge").classList.add("hidden");
+      return;
+    }
+
+    empty.classList.add("hidden");
+    active.classList.remove("hidden");
+    subtitle.textContent = `${activeOrder.bakery.name} · ${user.name}`;
+    orderPill.style.display = "inline-flex";
+    orderPill.textContent = activeOrder.id;
+    byId("pickupCode").textContent = activeOrder.code;
+
+    // show pickup badge
+    byId("navPickupBadge").classList.remove("hidden");
+
+    // items
+    const container = byId("pickupItems");
+    container.innerHTML = activeOrder.items
+            .slice()
+            .sort((a,b)=>a.product.name.localeCompare(b.product.name))
+            .map(it=>`
+          <div class="row" style="margin-top:8px;">
+            <div class="small">${it.qty}× ${it.product.name}</div>
+            <div class="small muted">${eur(it.product.price*it.qty)}</div>
+          </div>
+        `).join("");
+  }
+
+  function renderNavBadges(){
+    const c = cartCount();
+    const cartBadge = byId("navCartBadge");
+    if(c>0){
+      cartBadge.textContent = c;
+      cartBadge.classList.remove("hidden");
+    }else{
+      cartBadge.classList.add("hidden");
+    }
+    // pickup badge: only if active order
+    const pickupBadge = byId("navPickupBadge");
+    if(activeOrder) pickupBadge.classList.remove("hidden");
+    else pickupBadge.classList.add("hidden");
+  }
+
+  function renderAll(){
+    renderNavBadges();
+
+    const visible = qsa("section").find(s => !s.classList.contains("hidden"));
+    if(!visible) return;
+
+    if(visible.id === "screen-home") renderHome();
+    if(visible.id === "screen-bakeries") renderBakeries();
+    if(visible.id === "screen-bakery") renderBakery();
+    if(visible.id === "screen-cart") renderCart();
+    if(visible.id === "screen-pickup") renderPickup();
+
+    // update top cart badge in bakery screen if visible
+    if(visible.id === "screen-bakery") renderBakery();
+  }
+
+  // ---------- Countdown loop ----------
+  function tick(){
+    if(activeOrder){
+      const remainingMs = activeOrder.pickupAt - Date.now();
+      const ready = remainingMs <= 0;
+
+      const label = byId("countdownLabel");
+      const val = byId("countdownValue");
+      const hint = byId("countdownHint");
+      const card = byId("countdownCard");
+
+      label.textContent = ready ? "Bereit zur Abholung" : "Abholung in";
+      val.textContent = ready ? "Jetzt" : formatCountdown(remainingMs);
+      hint.textContent = ready
+              ? "Du kannst jetzt zum Abholpunkt gehen."
+              : "Wir schicken dir eine Push-Benachrichtigung, sobald alles bereit ist.";
+
+      card.style.background = ready ? "rgba(247,216,106,0.55)" : "rgba(232,217,196,0.55)";
+
+      // Fake push once when ready
+      if(ready && !activeOrder._pushed){
+        activeOrder._pushed = true;
+        showToast("Push: Bestellung ist abholbereit ✅");
+      }
+    }
+    requestAnimationFrame(tick);
+  }
+
+  function formatCountdown(ms){
+    const s = Math.max(0, Math.floor(ms/1000));
+    const m = Math.floor(s/60);
+    const r = s % 60;
+    return m + ":" + String(r).padStart(2,"0");
+  }
+
+  // ---------- Events ----------
+  byId("btnLogin").onclick = ()=>{
+    const nm = byId("loginName").value.trim() || "Lena";
+    user = { name: nm };
+    setScreen("home");
+  };
+
+  byId("btnToBakeriesFromHome").onclick = ()=> setScreen("bakeries");
+  byId("btnToBakeriesQuick").onclick = ()=> setScreen("bakeries");
+  byId("btnToPickupQuick").onclick = ()=>{
+    if(activeOrder) setScreen("pickup");
+    else showToast("Keine aktive Bestellung.", "Bäckereien", ()=> setScreen("bakeries"));
+  };
+
+  byId("backFromBakeries").onclick = ()=> setScreen("home");
+  byId("backFromBakery").onclick = ()=> setScreen("bakeries");
+  byId("btnGoCart").onclick = ()=> setScreen("cart");
+  byId("btnGoCartBottom").onclick = ()=> setScreen("cart");
+  byId("backFromCart").onclick = ()=> setScreen("bakery");
+  byId("backFromPickup").onclick = ()=> setScreen("home");
+  byId("btnOrderNowFromPickup").onclick = ()=> setScreen("bakeries");
+
+  byId("tabQuick").onclick = ()=> { bakeryTab = "quick"; renderAll(); };
+  byId("tabAll").onclick = ()=> { bakeryTab = "all"; renderAll(); };
+
+  byId("btnReorder").onclick = quickReorder;
+
+  byId("bakerySearch").addEventListener("input", renderBakeries);
+
+  // Bottom nav
+  qsa(".navBtn").forEach(btn=>{
+    btn.onclick = ()=>{
+      const target = btn.dataset.nav;
+      if(target === "pickup" && !activeOrder){
+        setScreen("pickup"); // shows empty state
+        return;
+      }
+      setScreen(target);
+    };
+  });
+
+  // ---------- Init ----------
+  setScreen("welcome");
+  tick();
+</script>
+</body>
+</html>
