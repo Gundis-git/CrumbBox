@@ -53,14 +53,25 @@ body{
     cursor:pointer;
 }
 .brandPill{
-    background: rgba(247,216,106,0.6);
-    color: var(--cocoa);
-    border-radius:16px;
-    padding:10px 12px;
-    font-weight:800;
-    font-size:12px;
+    width: 88px;                 /* kontrollierte Breite */
+    height: 44px;                /* flache App-Header-Höhe */
+    border-radius: 14px;
+    background: rgba(247,216,106,0.45);
     border:1px solid rgba(139,94,60,0.15);
-    white-space:nowrap;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 6px;
+    flex-shrink: 0;              /* NICHT zusammenschieben */
+}
+
+.brandPill img{
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;         /* Logo NIE abschneiden */
+    display: block;
 }
 .title{
     font-size:20px;
@@ -361,4 +372,31 @@ input{
     height:100%;
     object-fit: cover;   /* cover = schön gefüllt */
     display:block;
+}
+
+.brandIcon{
+    width: 52px;
+    height: 52px;
+    border-radius: 16px;
+
+    background: rgba(247,216,106,0.55);
+    border: 1px solid rgba(139,94,60,0.18);
+
+    display: grid;
+    place-items: center;
+
+    padding: 6px;
+    flex-shrink: 0;
+    cursor: pointer;
+}
+
+.brandIcon img{
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    display: block;
+}
+
+.brandIcon:active{
+    transform: scale(0.96);
 }
