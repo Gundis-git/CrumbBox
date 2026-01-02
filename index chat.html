@@ -73,7 +73,7 @@
           <div class="title" id="homeTitle">Hallo Lena, willkommen zurück</div>
           <div class="subtitle">Dein Morning-Rush in unter 60 Sekunden</div>
         </div>
-        <div class="brandPill">CrumbBox</div>
+        <div class="brandPill"><img src="bilder/crumbly.jpeg" alt=""></div>
       </div>
     </div>
 <!-- test -->
@@ -288,10 +288,10 @@
       etaMins: 7,
       popular: true,
       products: [
-        { id: "p1", name: "Buttercroissant", price: 1.60, desc: "Flaky, frisch gebacken", tags:["Morning"] },
-        { id: "p2", name: "Laugenbrezel", price: 1.20, desc: "Classic", tags:["Fast"] },
+        { id: "p1", name: "Buttercroissant", price: 1.60, desc: "Flaky, frisch gebacken", tags:["Morning"], img:"bilder/produktbilder/Croissant.jpg" },
+        { id: "p2", name: "Laugenbrezel", price: 1.20, desc: "Classic", tags:["Fast"], img:"bilder/produktbilder/Brezel.png"},
         { id: "p3", name: "Kaffee (Small)", price: 2.20, desc: "To-go", tags:["Add-on"] },
-        { id: "p4", name: "Vollkornbrötchen", price: 0.85, desc: "Herzhaft", tags:["Healthy"] }
+        { id: "p4", name: "Vollkornbrötchen", price: 0.85, desc: "Herzhaft", tags:["Healthy"], img:"bilder/produktbilder/Vollkornb.jpg" },
       ]
     },
     {
@@ -525,16 +525,23 @@
       const div = document.createElement("div");
       div.className = "prod";
       div.innerHTML = `
-          <div class="col">
-            <div style="font-weight:900">${p.name}</div>
-            ${p.desc ? `<div class="small muted">${p.desc}</div>` : ``}
-            <div class="tagRow">
-              <span class="pill">${eur(p.price)}</span>
-              ${(p.tags||[]).slice(0,2).map(t=>`<span class="pill">${t}</span>`).join("")}
-            </div>
-          </div>
-          <button class="plusBtn" aria-label="Add">+</button>
-        `;
+  <div class="prod-left">
+    <div class="prod-thumb">
+      <img src="${p.img || 'bilder/produkte/placeholder.jpg'}" alt="${p.name}">
+    </div>
+
+    <div class="col">
+      <div style="font-weight:900">${p.name}</div>
+      ${p.desc ? `<div class="small muted">${p.desc}</div>` : ``}
+      <div class="tagRow">
+        <span class="pill">${eur(p.price)}</span>
+        ${(p.tags||[]).slice(0,2).map(t=>`<span class="pill">${t}</span>`).join("")}
+      </div>
+    </div>
+  </div>
+
+  <button class="plusBtn" aria-label="Add">+</button>
+`;
       div.querySelector(".plusBtn").onclick = ()=> addToCart(p, b.id);
       container.appendChild(div);
     });

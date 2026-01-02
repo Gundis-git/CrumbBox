@@ -336,3 +336,29 @@ input{
     .hero-row{ flex-direction: column; align-items: flex-start; }
     .hero-logo{ width: 100%; min-width: 0; }
 }
+
+.prod-left{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    min-width: 0; /* verhindert Overflow bei langen Namen */
+}
+
+.prod-thumb{
+    width:64px;
+    height:64px;
+    flex: 0 0 64px;
+    border-radius:16px;
+    overflow:hidden;
+    border:1px solid var(--stroke);
+    background: rgba(232,217,196,0.35);
+    display:grid;
+    place-items:center;
+}
+
+.prod-thumb img{
+    width:100%;
+    height:100%;
+    object-fit: cover;   /* cover = schön gefüllt */
+    display:block;
+}
